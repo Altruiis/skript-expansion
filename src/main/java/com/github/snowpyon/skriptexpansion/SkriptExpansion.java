@@ -1,11 +1,16 @@
 package com.github.snowpyon.skriptexpansion;
 
+import ch.njol.skript.Skript;
 import ch.njol.skript.registrations.Classes;
 import ch.njol.skript.variables.Variables;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class SkriptExpansion extends PlaceholderExpansion {
+	
+	private Skript plugin;
 
     private final static Replacement<Player> UUID_REPLACEMENT = new Replacement<>(p -> p.getUniqueId().toString(),
             "(uuid of player|player's? uuid|uuid)");
@@ -14,6 +19,11 @@ public class SkriptExpansion extends PlaceholderExpansion {
     private final static Replacement<Player> DISPLAY_NAME_REPLACEMENT = new Replacement<>(Player::getDisplayName,
             "(display name of player|player's? display name|display name)");
 
+    @Override
+    public boolean canRegister( ) {
+    	return (plugin = (Skript) Bukkit.getPluginManager().getPlugin(getRequiredPlugin())) != null;
+    }
+    
     @Override
     public String getIdentifier() {
         return "skript";
@@ -26,7 +36,7 @@ public class SkriptExpansion extends PlaceholderExpansion {
 
     @Override
     public String getVersion() {
-        return "@version@";
+        return "1.2.0";
     }
 
     @Override
